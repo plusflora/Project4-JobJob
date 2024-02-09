@@ -17,3 +17,6 @@ It's a job tracker. Save and keep track jobs you've applied to and update the st
 
 ### ERDs
 ![](assets/ERD.PNG)
+
+### Wireframes
+![](assets/Wireframes.PNG)
