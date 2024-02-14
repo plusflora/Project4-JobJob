@@ -28,7 +28,13 @@ const applicationSchema = new mongoose.Schema(
 	},
 	{
 		timestamps: true,
+		toObject: { virtuals: true },
+		toJSON: { virtuals: true }
 	}
 )
+
+applicationSchema.virtual('fullTitle').get(function() {
+	return `${this.title} at ${this.cName}`
+})
 
 module.exports = mongoose.model('Application', applicationSchema)

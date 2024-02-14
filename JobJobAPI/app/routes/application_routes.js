@@ -43,6 +43,22 @@ router.get('/applications', requireToken, (req, res, next) => {
 		.catch(next)
 })
 
+// GET /appilcations/mine
+router.get('/applications/mine', requireToken, (req, res, next) => {
+	Application.find({ owner: req.user.id })
+		.then((applications) => {
+			// `applications` will be an array of Mongoose documents
+			// we want to convert each one to a POJO, so we use `.map` to
+			// apply `.toObject` to each one
+			return applications.map((application) => application.toObject())
+		})
+		// respond with status 200 and JSON of the applications
+		.then((applications) => res.status(200).json({ applications: applications }))
+		// if an error occurs, pass it to the handler
+		.catch(next)
+})
+
+
 // SHOW
 // GET /applications/5a7db6c74d55bc51bdf39793
 router.get('/applications/:id', requireToken, (req, res, next) => {
