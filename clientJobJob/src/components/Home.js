@@ -32,6 +32,7 @@ const Home = (props) => {
         )
       )} */}
 			<ApplicationsIndex user={user} />
+
     </>
   );
 };

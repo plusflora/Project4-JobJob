@@ -45,7 +45,7 @@ const ApplicationsIndex = (props) => {
       <Card.Header>{application.fullTitle}</Card.Header>
       <Card.Body>
         <Card.Text>
-          <Link to={`/applications/${application.id}`} className='btn btn-info'>
+          <Link to={`/applications/${application.id}`} className='btn btn-info' onClick={() => console.log('Clicked ID:', application.id)}>
             View Application
           </Link>
         </Card.Text>

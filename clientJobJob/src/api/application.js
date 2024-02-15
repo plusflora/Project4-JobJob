@@ -10,6 +10,13 @@ export const getAllApplications = (bearerToken) => {
   });
 }
 // Read - show
+export const getOneApplication = (bearerToken, id) => {
+  return axios(`${apiUrl}/applications/${id}`, {
+    headers: {
+      Authorization: `Bearer ${bearerToken}`
+    }
+  })
+}
 // Create - add an application
 // Update - update an application
 // Delete - delete an application
