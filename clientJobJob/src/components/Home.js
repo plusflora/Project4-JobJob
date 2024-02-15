@@ -1,23 +1,29 @@
-import { useState, useEffect } from "react"
-import { getAllApplications } from "../api/application"
+
+import { useState, useEffect } from 'react';
+import { getAllApplications } from "../api/application";
 
 const Home = (props) => {
-	// const { msgAlert, user } = props
-	// console.log('props in home', props)
+  const { user } = props;
 
-	const [applications, setApplications] = useState(null)
+  const [applications, setApplications] = useState(null);
 
-	useEffect(() => {
-			getAllApplications()
-					.then(applications => console.log(res.data))
-					.catch(error => console.error(error))
-	}, []) 
+  useEffect(() => {
+    if (user?.token) { // Ensure user token exists
+      getAllApplications(user.token)
+        .then(response => {
+          setApplications(response.data);
+          console.log('Applications:', response.data); // Log applications
+        })
+        .catch(error => console.error(error));
+    }
+  }, [user?.token]);
 
-	return (
-		<>
-			<h2>Home Page</h2>
-		</>
-	)
-}
+  return (
+    <>
+      <h2>Home Page</h2>
+      {/* Render your applications here */}
+    </>
+  );
+};
 
-export default Home
+export default Home;
