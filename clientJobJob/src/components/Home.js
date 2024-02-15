@@ -1,27 +1,37 @@
-
-import { useState, useEffect } from 'react';
-import { getAllApplications } from "../api/application";
+// import { useState, useEffect } from 'react';
+// import { getAllApplications } from "../api/application";
+import ApplicationsIndex from './applications/ApplicationsIndex';
 
 const Home = (props) => {
   const { user } = props;
 
-  const [applications, setApplications] = useState(null);
+  // const [applications, setApplications] = useState(null);
+	// const { user, msgAlert } = props;
 
-  useEffect(() => {
-    if (user?.token) { // Ensure user token exists
-      getAllApplications(user.token)
-        .then(response => {
-          setApplications(response.data);
-          console.log('Applications:', response.data); // Log applications
-        })
-        .catch(error => console.error(error));
-    }
-  }, [user?.token]);
+  // const [applications, setApplications] = useState(null);
+
+  // useEffect(() => {
+  //   if (user?.token) {
+  //     getAllApplications(user.token)
+  //       .then(response => {
+  //         setApplications(response.data.applications);
+  //         console.log('Applications:', response.data.applications);
+  //       })
+  //       .catch(error => {
+  //         console.error('Error fetching applications:', error);
+  //       });
+  //   }
+  // }, [user?.token]);
 
   return (
     <>
       <h2>Home Page</h2>
-      {/* Render your applications here */}
+      {/* {applications == null ? <p>No apps yet</p> : (
+        applications.length === 0 ? <p>No apps yet</p> : (
+          <p>{applications[0].fullTitle}</p>
+        )
+      )} */}
+			<ApplicationsIndex user={user} />
     </>
   );
 };
