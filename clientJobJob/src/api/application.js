@@ -39,3 +39,14 @@ export const createApplication = async (user, newApplication) => {
 };
 // Update - update an application
 // Delete - delete an application
+export const removeApplication = async (bearerToken, id) => {
+  try {
+    await axios.delete(`${apiUrl}/applications/${id}`, {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`
+      }
+    });
+  } catch (error) {
+    throw error; // Rethrow the error for handling in the component
+  }
+};

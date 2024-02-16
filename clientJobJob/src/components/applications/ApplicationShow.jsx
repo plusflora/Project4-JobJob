@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { getOneApplication } from '../../api/application'
+import { getOneApplication, removeApplication } from '../../api/application'
 import LoadingScreen from '../shared/LoadingScreen'
-import { Container, Card } from 'react-bootstrap'
+import { Container, Card, Button } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 
 
 const ApplicationShow = (props) => {
@@ -10,6 +11,8 @@ const ApplicationShow = (props) => {
   const { user, msgAlert } = props
 
   const [application, setApplication] = useState(null)
+
+  const navigate = useNavigate()
 
   // console.log('props in appshow', props)
   console.log('id param in appshow', applicationId)
@@ -31,6 +34,17 @@ const ApplicationShow = (props) => {
 
   }, [applicationId, user, msgAlert]); // needs the user since the api is calling it
 
+  const deleteApplication = () => {
+    removeApplication(user.token, application._id)
+      .then(() => navigate('/'))
+      .catch(err => {
+        msgAlert({
+          heading: 'Oh no',
+          message: 'Something went wrong',
+          variant: 'whoops'
+        });
+      })
+  }
 
   if (!application) {
     <LoadingScreen />
@@ -52,13 +66,18 @@ const ApplicationShow = (props) => {
               </Card.Text>
             </Card.Body>
             <Card.Footer>
-
+              {application.owner && user && application.owner._id === user._id && (
+                <>
+                  <Button className="ml-2" variant='danger' onClick={() => deleteApplication()}>Delete App</Button>
+                  <Button className="ml-2">Update Application</Button>
+                </>
+              )}
             </Card.Footer>
           </Card>
         </Container>
       )}
     </>
-  )
+  );
 }
 
 export default ApplicationShow

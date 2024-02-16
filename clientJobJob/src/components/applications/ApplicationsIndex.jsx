@@ -58,9 +58,7 @@ const ApplicationsIndex = (props) => {
       <div className="container-md" style={ cardContainerLayout }>
         { applicationCards }
       </div>
-      {/* comment this out when you're done! */}
-      
-      <p>Something</p>
+
     </>
   );
 };
