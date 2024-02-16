@@ -15,18 +15,18 @@ const ApplicationsIndex = (props) => {
   const [applications, setApplications] = useState(null);
 
   useEffect(() => {
-    // console.log('Fetching applications...');
+    // Fetch applications only if the user is logged in and has a token
     if (user?.token) {
-      getAllApplications(user.token)
+      getAllApplications(user.token, user._id) // Pass user's ID to fetch only their applications
         .then(response => {
           console.log('Applications response:', response.data);
-          setApplications(response.data.applications);
+          setApplications(response.data.applications); // Adjust to access the correct property of the response data
         })
         .catch(error => {
           console.error('Error fetching applications:', error);
         });
     }
-  }, [user?.token]);
+  }, [user?.token, user?._id]);
 
   console.log('Applications state:', applications);
   
@@ -51,7 +51,7 @@ const ApplicationsIndex = (props) => {
         </Card.Text>
       </Card.Body>
     </Card>
-  ))
+  ));
 
   return (
     <>
@@ -59,6 +59,7 @@ const ApplicationsIndex = (props) => {
         { applicationCards }
       </div>
       {/* comment this out when you're done! */}
+      
       <p>Something</p>
     </>
   );
