@@ -38,8 +38,19 @@ export const createApplication = async (user, newApplication) => {
   }
 };
 // Update - update an application
+export const updateApplication = async (bearerToken, updatedApplication) => {
+  return axios({
+    url: `${apiUrl}/applications/${updatedApplication._id}`,
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${bearerToken}`
+    },
+    data: { application: updatedApplication }
+  })
+};
+
 // Delete - delete an application
-export const removeApplication = async (bearerToken, id) => {
+export const removeApplication = async (bearerToken, id, updatedData) => {
   try {
     await axios.delete(`${apiUrl}/applications/${id}`, {
       headers: {

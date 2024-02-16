@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { getOneApplication, removeApplication } from '../../api/application'
+import { getOneApplication, removeApplication, updateApplication } from '../../api/application'
 import LoadingScreen from '../shared/LoadingScreen'
 import { Container, Card, Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
+import EditApplicationModal from './EditApplicationModal'
+
 
 
 const ApplicationShow = (props) => {
@@ -11,6 +13,10 @@ const ApplicationShow = (props) => {
   const { user, msgAlert } = props
 
   const [application, setApplication] = useState(null)
+
+  const [editModalShow, setEditModalShow] = useState(false)
+
+  const [updated, setUpdated] = useState(false)
 
   const navigate = useNavigate()
 
@@ -32,7 +38,7 @@ const ApplicationShow = (props) => {
           });
         });
 
-  }, [applicationId, user, msgAlert]); // needs the user since the api is calling it
+  }, [applicationId, user, msgAlert, updated]); // needs the user since the api is calling it
 
   const deleteApplication = () => {
     removeApplication(user.token, application._id)
@@ -53,28 +59,39 @@ const ApplicationShow = (props) => {
   return (
     <>
       {application && (
-        <Container className='m-2'>
-          <Card>
-            <Card.Header>
-              {application.fullTitle}
-            </Card.Header>
-            <Card.Body>
-              <Card.Text>
-                <small>Company: {application.cName} </small><br />
-                <small>Applied: {application.aStatus ? "Yes": "No" } </small><br />
-                <small>Interview: {application.interview ? "Yes" : "No" } </small><br />
-              </Card.Text>
-            </Card.Body>
-            <Card.Footer>
-              {application.owner && user && application.owner._id === user._id && (
-                <>
-                  <Button className="ml-2" variant='danger' onClick={() => deleteApplication()}>Delete App</Button>
-                  <Button className="ml-2">Update Application</Button>
-                </>
-              )}
-            </Card.Footer>
-          </Card>
-        </Container>
+        <>
+          <Container className='m-2'>
+            <Card>
+              <Card.Header>
+                {application.fullTitle}
+              </Card.Header>
+              <Card.Body>
+                <Card.Text>
+                  <small>Company: {application.cName} </small><br />
+                  <small>Applied: {application.aStatus ? "Yes": "No" } </small><br />
+                  <small>Interview: {application.interview ? "Yes" : "No" } </small><br />
+                </Card.Text>
+              </Card.Body>
+              <Card.Footer>
+                {application.owner && user && application.owner._id === user._id && (
+                  <>
+                    <Button className="ml-2" variant='danger' onClick={() => deleteApplication()}>Delete App</Button>
+                    <Button className="ml-2" variant='warning' onClick={() => setEditModalShow(true)}>Update Application</Button>
+                  </>
+                )}
+              </Card.Footer>
+            </Card>
+          </Container>
+          <EditApplicationModal 
+            user={user}
+            show={editModalShow}
+            updateApplication={updateApplication}
+            msgAlert={msgAlert}
+            handleClose={() => setEditModalShow(false)}
+            application={application}
+            triggerRefresh={() => setUpdated(prev => !prev)}
+          />
+        </>
       )}
     </>
   );
